@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+  <h2 class="text-2xl font-bold mb-6">{% if object %}Editar{% else %}Inserir{% endif %} Monografia</h2>
+
+  <form method="post" enctype="multipart/form-data" class="bg-white shadow-md rounded-0 px-8 pt-6 pb-8 mb-6">
+    <div class="flex justify-end">
+       <a href="{% url 'monografia_list' %}" class="text-blue-500 hover:underline">Voltar à lista</a>
+    </div>
+    {% csrf_token %}
+    <div class="my-3">
+      {{ form.as_p }}
+    </div>
+    <div class="flex justify-end mt-4">
+      <button type="submit"
+        class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-0">Salvar</button>
+    </div>
+  </form>
+</div>
+{% endblock %}

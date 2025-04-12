@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+  <h2 class="text-2xl font-bold mb-4">Monografias Sistemas de Informação</h2>
+
+  <div class=" flex justify-end mb-6">
+    <a href="{% url 'monografia_create' %}"
+      class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-0">Adicionar nova monografia</a>
+  </div>
+
+  <form method="get" class="mb-6">
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+      <input type="text" name="titulo" placeholder="Buscar por título" value="{{ request.GET.titulo }}"
+        class="border border-gray-300 rounded-0 p-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+      <input type="text" name="orientador" placeholder="Buscar por orientador" value="{{ request.GET.orientador }}"
+        class="border border-gray-300 rounded-0 p-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+      <input type="text" name="coorientador" placeholder="Buscar por coorientador"
+        value="{{ request.GET.coorientador }}"
+        class="border border-gray-300 rounded-0 p-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+      <input type="text" name="palavra" placeholder="Palavra-chave" value="{{ request.GET.palavra }}"
+        class="border border-gray-300 rounded-0 p-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+      <input type="date" name="data_defesa" value="{{ request.GET.data_defesa }}"
+        class="border border-gray-300 rounded-0 p-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+      <input type="text" name="texto" placeholder="Resumo/Abstract" value="{{ request.GET.texto }}"
+        class="border border-gray-300 rounded-0 p-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+    </div>
+    <div class="mt-4">
+      <button type="submit"
+        class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-0">Buscar</button>
+    </div>
+  </form>
+  <hr class="mb-6 text-gray-300">
+  <ul class="mb-6">
+    {% for monografia in object_list %}
+    <div class="bg-white shadow rounded-0 p-6 mb-4">
+      <a href="{% url 'monografia_detail' monografia.pk %}"
+        class="block text-xl font-semibold text-gray-800 hover:text-blue-500">
+        {{ monografia.titulo }}
+      </a>
+      <p class="text-sm text-gray-600 mt-2">
+        Defesa: {{ monografia.data_defesa|date:"d/m/Y" }}
+      </p>
+    </div>
+    {% empty %}
+    <p>Nenhuma monografia encontrada.</p>
+    {% endfor %}
+  </ul>
+
+  <div class="flex justify-end">
+    {% if is_paginated %}
+    <div class="flex items-center space-x-4">
+      {% if page_obj.has_previous %}
+      <a href="?{% if request.GET %}{{ request.GET.urlencode }}&{% endif %}page={{ page_obj.previous_page_number }}"
+        class="bg-gray-200 hover:bg-gray-300 text-gray-800 py-1 px-3 rounded-0">Anterior</a>
+      {% endif %}
+      <span>Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}</span>
+      {% if page_obj.has_next %}
+      <a href="?{% if request.GET %}{{ request.GET.urlencode }}&{% endif %}page={{ page_obj.next_page_number }}"
+        class="bg-gray-200 hover:bg-gray-300 text-gray-800 py-1 px-3 rounded-0">Próxima</a>
+      {% endif %}
+    </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}
