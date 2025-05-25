@@ -1,0 +1,529 @@
+openapi: 3.0.3
+info:
+  title: API Monografias
+  version: 1.0.0
+  description: API RESTful para gerenciar monografias
+paths:
+  /api/monografias/:
+    get:
+      operationId: monografias_list
+      parameters:
+      - in: query
+        name: coorientador
+        schema:
+          type: string
+      - in: query
+        name: data_defesa
+        schema:
+          type: string
+          format: date
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - in: query
+        name: orientador
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      tags:
+      - monografias
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedMonografiaList'
+          description: ''
+    post:
+      operationId: monografias_create
+      tags:
+      - monografias
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              schema:
+                type: object
+                properties:
+                  titulo:
+                    type: string
+                  autor:
+                    type: string
+                  orientador:
+                    type: string
+                  coorientador:
+                    type: string
+                  resumo:
+                    type: string
+                  abstract:
+                    type: string
+                  palavras_chave:
+                    type: string
+                  data_defesa:
+                    type: string
+                    format: date
+                  arquivo:
+                    type: string
+                    format: binary
+                required:
+                - titulo
+                - autor
+                - orientador
+                - coorientador
+                - resumo
+                - abstract
+                - palavras_chave
+                - data_defesa
+                - arquivo
+      security:
+      - tokenAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Monografia'
+          description: ''
+  /api/monografias/{id}/:
+    get:
+      operationId: monografias_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this monografia.
+        required: true
+      tags:
+      - monografias
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Monografia'
+          description: ''
+    put:
+      operationId: monografias_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this monografia.
+        required: true
+      tags:
+      - monografias
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              schema:
+                type: object
+                properties:
+                  titulo:
+                    type: string
+                  autor:
+                    type: string
+                  orientador:
+                    type: string
+                  coorientador:
+                    type: string
+                  resumo:
+                    type: string
+                  abstract:
+                    type: string
+                  palavras_chave:
+                    type: string
+                  data_defesa:
+                    type: string
+                    format: date
+                  arquivo:
+                    type: string
+                    format: binary
+                required:
+                - titulo
+                - autor
+                - orientador
+                - coorientador
+                - resumo
+                - abstract
+                - palavras_chave
+                - data_defesa
+                - arquivo
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Monografia'
+          description: ''
+    patch:
+      operationId: monografias_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this monografia.
+        required: true
+      tags:
+      - monografias
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              schema:
+                type: object
+                properties:
+                  titulo:
+                    type: string
+                  autor:
+                    type: string
+                  orientador:
+                    type: string
+                  coorientador:
+                    type: string
+                  resumo:
+                    type: string
+                  abstract:
+                    type: string
+                  palavras_chave:
+                    type: string
+                  data_defesa:
+                    type: string
+                    format: date
+                  arquivo:
+                    type: string
+                    format: binary
+                required:
+                - titulo
+                - autor
+                - orientador
+                - coorientador
+                - resumo
+                - abstract
+                - palavras_chave
+                - data_defesa
+                - arquivo
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Monografia'
+          description: ''
+    delete:
+      operationId: monografias_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this monografia.
+        required: true
+      tags:
+      - monografias
+      security:
+      - tokenAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/schema/:
+    get:
+      operationId: schema_retrieve
+      description: |-
+        OpenApi3 schema for this API. Format can be selected via content negotiation.
+
+        - YAML: application/vnd.oai.openapi
+        - JSON: application/vnd.oai.openapi+json
+      parameters:
+      - in: query
+        name: format
+        schema:
+          type: string
+          enum:
+          - json
+          - yaml
+      - in: query
+        name: lang
+        schema:
+          type: string
+          enum:
+          - af
+          - ar
+          - ar-dz
+          - ast
+          - az
+          - be
+          - bg
+          - bn
+          - br
+          - bs
+          - ca
+          - ckb
+          - cs
+          - cy
+          - da
+          - de
+          - dsb
+          - el
+          - en
+          - en-au
+          - en-gb
+          - eo
+          - es
+          - es-ar
+          - es-co
+          - es-mx
+          - es-ni
+          - es-ve
+          - et
+          - eu
+          - fa
+          - fi
+          - fr
+          - fy
+          - ga
+          - gd
+          - gl
+          - he
+          - hi
+          - hr
+          - hsb
+          - hu
+          - hy
+          - ia
+          - id
+          - ig
+          - io
+          - is
+          - it
+          - ja
+          - ka
+          - kab
+          - kk
+          - km
+          - kn
+          - ko
+          - ky
+          - lb
+          - lt
+          - lv
+          - mk
+          - ml
+          - mn
+          - mr
+          - ms
+          - my
+          - nb
+          - ne
+          - nl
+          - nn
+          - os
+          - pa
+          - pl
+          - pt
+          - pt-br
+          - ro
+          - ru
+          - sk
+          - sl
+          - sq
+          - sr
+          - sr-latn
+          - sv
+          - sw
+          - ta
+          - te
+          - tg
+          - th
+          - tk
+          - tr
+          - tt
+          - udm
+          - ug
+          - uk
+          - ur
+          - uz
+          - vi
+          - zh-hans
+          - zh-hant
+      tags:
+      - schema
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/vnd.oai.openapi:
+              schema:
+                type: object
+                additionalProperties: {}
+            application/yaml:
+              schema:
+                type: object
+                additionalProperties: {}
+            application/vnd.oai.openapi+json:
+              schema:
+                type: object
+                additionalProperties: {}
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+  /api/token/:
+    post:
+      operationId: token_create
+      tags:
+      - token
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/AuthToken'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/AuthToken'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthToken'
+        required: true
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthToken'
+          description: ''
+components:
+  schemas:
+    AuthToken:
+      type: object
+      properties:
+        username:
+          type: string
+          writeOnly: true
+        password:
+          type: string
+          writeOnly: true
+        token:
+          type: string
+          readOnly: true
+      required:
+      - password
+      - token
+      - username
+    Monografia:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        arquivo:
+          type: string
+        titulo:
+          type: string
+          maxLength: 255
+        autor:
+          type: string
+          maxLength: 255
+        orientador:
+          type: string
+          maxLength: 255
+        coorientador:
+          type: string
+          maxLength: 255
+        resumo:
+          type: string
+        abstract:
+          type: string
+        palavras_chave:
+          type: string
+          description: Separe as palavras por vírgula
+          maxLength: 255
+        data_defesa:
+          type: string
+          format: date
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - abstract
+      - arquivo
+      - autor
+      - coorientador
+      - created_at
+      - data_defesa
+      - id
+      - orientador
+      - palavras_chave
+      - resumo
+      - titulo
+      - updated_at
+    PaginatedMonografiaList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Monografia'
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: sessionid
+    tokenAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Token-based authentication with required prefix "Token"

@@ -21,7 +21,10 @@ from django.conf import settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('api/', include('monografia.api.urls')),
+    # path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     path('', include('monografia.urls')),
+    # path('', include('accounts.urls')),
 ]
 
 if settings.DEBUG:

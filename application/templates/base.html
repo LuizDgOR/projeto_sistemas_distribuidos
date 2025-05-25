@@ -22,6 +22,21 @@
 </head>
 
 <body>
+    {% comment %}
+    <nav class="bg-white shadow-md p-4 flex justify-between items-center">
+    <a href="{% url 'dashboard' %}" class="text-xl font-bold">Monografias SI</a>
+    <div class="space-x-4">
+      {% if request.user.is_authenticated %}
+        <span>Olá, {{ request.user.get_full_name|default:request.user.username }}!</span>
+        <a href="{% url 'dashboard' %}" class="hover:underline">Dashboard</a>
+        <a href="{% url 'monografia_list' %}" class="hover:underline">Monografias</a>
+        <a href="{% url 'logout' %}" class="hover:underline">Logout</a>
+      {% else %}
+        <a href="{% url 'login' %}" class="hover:underline">Login</a>
+      {% endif %}
+    </div>
+    {% endcomment %}
+  </nav>
     <div class="container mx-auto">
         {% block content %}{% endblock %}
     </div>
