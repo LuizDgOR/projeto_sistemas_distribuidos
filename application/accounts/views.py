@@ -2,9 +2,10 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, CreateView
+from django.urls import reverse_lazy
 from django.contrib.auth.models import User
-from .forms import LoginForm
+from .forms import LoginForm, UserRegistrationForm
 from django.db.models import Count
 from monografia.models import Monografia
 from .models import UserProfile, UserAuditLog
@@ -14,7 +15,7 @@ class LoginView(TemplateView):
     
     def get(self, request):
         if request.user.is_authenticated:
-            return redirect('dashboard')
+            return redirect('accounts:dashboard')
         form = LoginForm()
         return render(request, self.template_name, {'form': form})
     
@@ -29,24 +30,24 @@ class LoginView(TemplateView):
             if auth_user is not None:
                 login(request, auth_user)
                 messages.success(request, f'Bem-vindo, {auth_user.get_full_name() or auth_user.username}!')
-                return redirect('dashboard')
+                return redirect('accounts:dashboard')
             else:
                 messages.error(request, 'Credenciais inválidas.')
         
         return render(request, self.template_name, {'form': form})
 
-@login_required
 def logout_view(request):
     """View personalizada para logout"""
     if request.user.is_authenticated:
+        user_name = request.user.get_full_name() or request.user.username
         logout(request)
-        messages.success(request, 'Logout realizado com sucesso!')
+        messages.success(request, f'Até logo, {user_name}! Logout realizado com sucesso.')
     return redirect('monografia:list')
 
-@login_required
+@login_required  
 def dashboard_view(request):
     """View para o dashboard do usuário"""
-    return redirect('monografia:list')
+    return redirect('accounts:dashboard')
 
 @login_required
 def profile(request):
@@ -92,3 +93,51 @@ def get_client_ip(request):
     else:
         ip = request.META.get('REMOTE_ADDR')
     return ip
+
+class RegisterView(CreateView):
+    form_class = UserRegistrationForm
+    template_name = 'accounts/register.html'
+    success_url = reverse_lazy('accounts:login')
+
+    def form_valid(self, form):
+        user = form.save()
+        messages.success(self.request, 'Conta criada com sucesso! Faça login para continuar.')
+        return redirect('accounts:login')
+
+    def form_invalid(self, form):
+        messages.error(self.request, 'Erro ao criar conta. Verifique os dados informados.')
+        return super().form_invalid(form)
+
+@login_required
+def dashboard(request):
+    """
+    Dashboard personalizado baseado no tipo de usuário
+    """
+    user = request.user
+    profile = getattr(user, 'profile', None)
+    
+    context = {
+        'user': user,
+        'profile': profile,
+    }
+    
+    # Estatísticas gerais
+    context['total_monografias'] = Monografia.objects.count()
+    
+    # Estatísticas específicas por tipo de usuário
+    if profile:
+        if profile.is_professor():
+            context['minhas_orientacoes'] = Monografia.objects.filter(orientador__icontains=user.get_full_name()).count()
+            context['minhas_coorientacoes'] = Monografia.objects.filter(coorientador__icontains=user.get_full_name()).count()
+            
+        elif profile.is_aluno():
+            context['minhas_monografias'] = Monografia.objects.filter(autor__icontains=user.get_full_name()).count()
+            
+        elif profile.is_admin():
+            from django.contrib.auth.models import User
+            context['total_usuarios'] = User.objects.count()
+    
+    # Monografias recentes
+    context['monografias_recentes'] = Monografia.objects.order_by('-created_at')[:5]
+    
+    return render(request, 'accounts/dashboard.html', context)

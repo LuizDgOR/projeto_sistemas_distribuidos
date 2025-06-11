@@ -173,7 +173,7 @@ SPECTACULAR_SETTINGS = {
 #     {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 # ]
 
-# Login/Logout URLs
-LOGIN_URL = '/login/'
-LOGIN_REDIRECT_URL = '/monografias/'
-LOGOUT_REDIRECT_URL = '/monografias/'
+# URL de redirecionamento após login e logout
+LOGIN_REDIRECT_URL = 'accounts:dashboard'
+LOGOUT_REDIRECT_URL = 'monografia:list'
+LOGIN_URL = 'accounts:login'

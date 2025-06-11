@@ -28,16 +28,17 @@
                     <span class="text-sm text-gray-500">({{ request.user.profile.get_tipo_usuario_display }})</span>
                     {% endif %}
                 </span>
-                <a href="{% url 'dashboard' %}" class="hover:underline">🏠 Dashboard</a>
+                <a href="{% url 'accounts:dashboard' %}" class="hover:underline">🏠 Dashboard</a>
                 <a href="{% url 'monografia:list' %}" class="hover:underline">📖 Monografias</a>
-                {% if request.user.profile.pode_gerenciar_monografias %}
+                {% if request.user.profile and request.user.profile.pode_gerenciar_monografias %}
                     <a href="{% url 'monografia:create' %}" class="hover:underline text-blue-600">➕ Nova Monografia</a>
                 {% endif %}
                 
-                <a href="{% url 'logout' %}" class="hover:underline text-red-600">🚪 Logout</a>
+                <a href="{% url 'accounts:logout' %}" class="hover:underline text-red-600">🚪 Logout</a>
             {% else %}
                 <a href="{% url 'monografia:list' %}" class="hover:underline">📖 Monografias</a>
-                <a href="{% url 'login' %}" class="hover:underline bg-blue-500 text-white px-3 py-1 rounded">🔑 Login</a>
+                <a href="{% url 'accounts:register' %}" class="hover:underline text-green-600">📝 Registrar</a>
+                <a href="{% url 'accounts:login' %}" class="hover:underline bg-blue-500 text-white px-3 py-1 rounded">🔑 Login</a>
             {% endif %}
         </div>
     </nav>

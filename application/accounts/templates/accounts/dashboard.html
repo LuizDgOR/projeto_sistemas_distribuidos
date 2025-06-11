@@ -44,7 +44,7 @@
       <div class="flex items-center">
         <div class="flex-shrink-0">
           <svg class="h-8 w-8 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
-            <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h8a2 2 0 012 2v12a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 0v12h8V4H6z" clip-rule="evenodd" />
           </svg>
         </div>
         <div class="ml-5 w-0 flex-1">
@@ -81,8 +81,8 @@
     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
       <a href="{% url 'monografia:list' %}" 
          class="flex items-center p-4 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors">
-        <svg class="h-6 w-6 text-blue-600 mr-3" fill="currentColor" viewBox="0 0 20 20">
-          <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+        <svg class="h-6 w-6 text-blue-600 mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h8a2 2 0 012 2v12a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 0v12h8V4H6z" clip-rule="evenodd" />
         </svg>
         <span class="font-medium text-blue-900">Ver Monografias</span>
       </a>
@@ -90,20 +90,22 @@
       {% if user.profile.pode_gerenciar_monografias %}
       <a href="{% url 'monografia:create' %}" 
          class="flex items-center p-4 bg-green-50 rounded-lg hover:bg-green-100 transition-colors">
-        <svg class="h-6 w-6 text-green-600 mr-3" fill="currentColor" viewBox="0 0 20 20">
+        <svg class="h-6 w-6 text-green-600 mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
           <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
         </svg>
         <span class="font-medium text-green-900">Nova Monografia</span>
       </a>
       {% endif %}
 
+      {% comment %}
       <a href="{% url 'accounts:profile' %}" 
          class="flex items-center p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
-        <svg class="h-6 w-6 text-gray-600 mr-3" fill="currentColor" viewBox="0 0 20 20">
+        <svg class="h-6 w-6 text-gray-600 mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
           <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
         </svg>
         <span class="font-medium text-gray-900">Meu Perfil</span>
       </a>
+      {% endcomment %}
     </div>
   </div>
 

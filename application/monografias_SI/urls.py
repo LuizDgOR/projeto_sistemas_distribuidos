@@ -29,9 +29,9 @@ urlpatterns = [
     path('', RedirectView.as_view(url='/monografias/', permanent=False), name='home'),
     
     # URLs de autenticação diretas
-    path('login/', auth_views.LoginView.as_view(template_name='accounts/login.html'), name='login'),
-    path('logout/', logout_view, name='logout'),
-    path('dashboard/', dashboard_view, name='dashboard'),
+    # path('login/', auth_views.LoginView.as_view(template_name='accounts/login.html'), name='login'),
+    # path('logout/', logout_view, name='logout'),
+    # path('dashboard/', dashboard_view, name='dashboard'),
 ]
 
 # Configurar handlers de erro

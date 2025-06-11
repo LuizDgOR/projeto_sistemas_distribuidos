@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-md w-full space-y-8">
+    <div>
+      <div class="mx-auto h-12 w-12 flex items-center justify-center rounded-full bg-green-100">
+        <svg class="h-8 w-8 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
+        </svg>
+      </div>
+      <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
+        Criar nova conta
+      </h2>
+      <p class="mt-2 text-center text-sm text-gray-600">
+        Sistema de Monografias - Sistemas de Informação
+      </p>
+    </div>
+    
+    <form class="mt-8 space-y-6" method="post">
+      {% csrf_token %}
+      
+      {% if form.errors %}
+      <div class="bg-red-50 border border-red-200 rounded-lg p-4">
+        <div class="flex">
+          <svg class="h-5 w-5 text-red-400" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+          </svg>
+          <div class="ml-3">
+            <h3 class="text-sm font-medium text-red-800">Erro no cadastro</h3>
+            <div class="mt-2 text-sm text-red-700">
+              {% for field, errors in form.errors.items %}
+                {% for error in errors %}
+                  <p>{{ error }}</p>
+                {% endfor %}
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endif %}
+
+      <div class="space-y-4">
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label for="{{ form.first_name.id_for_label }}" class="block text-sm font-medium text-gray-700">Nome</label>
+            {{ form.first_name }}
+          </div>
+          <div>
+            <label for="{{ form.last_name.id_for_label }}" class="block text-sm font-medium text-gray-700">Sobrenome</label>
+            {{ form.last_name }}
+          </div>
+        </div>
+        
+        <div>
+          <label for="{{ form.username.id_for_label }}" class="block text-sm font-medium text-gray-700">Nome de usuário</label>
+          {{ form.username }}
+        </div>
+        
+        <div>
+          <label for="{{ form.email.id_for_label }}" class="block text-sm font-medium text-gray-700">Email</label>
+          {{ form.email }}
+        </div>
+        
+        <div>
+          <label for="{{ form.tipo_usuario.id_for_label }}" class="block text-sm font-medium text-gray-700">Tipo de usuário</label>
+          {{ form.tipo_usuario }}
+        </div>
+        
+        <div>
+          <label for="{{ form.password1.id_for_label }}" class="block text-sm font-medium text-gray-700">Senha</label>
+          {{ form.password1 }}
+        </div>
+        
+        <div>
+          <label for="{{ form.password2.id_for_label }}" class="block text-sm font-medium text-gray-700">Confirmar senha</label>
+          {{ form.password2 }}
+        </div>
+      </div>
+
+      <div>
+        <button type="submit" 
+                class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
+          <span class="absolute left-0 inset-y-0 flex items-center pl-3">
+            <svg class="h-5 w-5 text-green-500 group-hover:text-green-400" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M8 9a3 3 0 100-6 3 3 0 000 6zM8 11a6 6 0 016 6H2a6 6 0 016-6z"/>
+            </svg>
+          </span>
+          Criar conta
+        </button>
+      </div>
+
+      <div class="text-center space-y-2">
+        <p class="text-sm text-gray-600">
+          Já tem uma conta? 
+          <a href="{% url 'accounts:login' %}" class="font-medium text-blue-600 hover:text-blue-500">
+            Faça login
+          </a>
+        </p>
+        <p class="text-sm text-gray-600">
+          <a href="{% url 'monografia:list' %}" class="font-medium text-blue-600 hover:text-blue-500">
+            ← Voltar às monografias
+          </a>
+        </p>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}
