@@ -1,0 +1,131 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+  <div class="mb-8">
+    <h1 class="text-3xl font-bold text-gray-900">Dashboard</h1>
+    <p class="text-gray-600">Bem-vindo de volta, {{ user.get_full_name|default:user.username }}!</p>
+  </div>
+
+  <!-- Informações do usuário -->
+  <div class="bg-white shadow-lg rounded-lg p-6 mb-8">
+    <div class="flex items-center space-x-4">
+      <div class="bg-blue-100 rounded-full p-3">
+        <svg class="h-8 w-8 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
+        </svg>
+      </div>
+      <div>
+        <h2 class="text-xl font-semibold">{{ user.get_full_name|default:user.username }}</h2>
+        <p class="text-gray-600">
+          {% if user.profile %}
+          {{ user.profile.get_tipo_usuario_display }}
+          {% if user.profile.pode_gerenciar_monografias %}
+          <span class="ml-2 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+            Pode gerenciar monografias
+          </span>
+          {% else %}
+          <span class="ml-2 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+            Visualização apenas
+          </span>
+          {% endif %}
+          {% else %}
+          <span class="text-red-600">Perfil não configurado</span>
+          {% endif %}
+        </p>
+        <p class="text-sm text-gray-500">{{ user.email }}</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Estatísticas gerais -->
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+    <div class="bg-white shadow rounded-lg p-6">
+      <div class="flex items-center">
+        <div class="flex-shrink-0">
+          <svg class="h-8 w-8 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+        </div>
+        <div class="ml-5 w-0 flex-1">
+          <dl>
+            <dt class="text-sm font-medium text-gray-500 truncate">Total de Monografias</dt>
+            <dd class="text-lg font-medium text-gray-900">{{ total_monografias }}</dd>
+          </dl>
+        </div>
+      </div>
+    </div>
+
+    {% if user.profile.pode_gerenciar_monografias %}
+    <div class="bg-white shadow rounded-lg p-6">
+      <div class="flex items-center">
+        <div class="flex-shrink-0">
+          <svg class="h-8 w-8 text-green-600" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3z" />
+          </svg>
+        </div>
+        <div class="ml-5 w-0 flex-1">
+          <dl>
+            <dt class="text-sm font-medium text-gray-500 truncate">Total de Usuários</dt>
+            <dd class="text-lg font-medium text-gray-900">{{ total_usuarios }}</dd>
+          </dl>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+  </div>
+
+  <!-- Ações rápidas -->
+  <div class="bg-white shadow rounded-lg p-6 mb-8">
+    <h3 class="text-lg font-medium text-gray-900 mb-4">Ações Rápidas</h3>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <a href="{% url 'monografia:list' %}" 
+         class="flex items-center p-4 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors">
+        <svg class="h-6 w-6 text-blue-600 mr-3" fill="currentColor" viewBox="0 0 20 20">
+          <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        <span class="font-medium text-blue-900">Ver Monografias</span>
+      </a>
+
+      {% if user.profile.pode_gerenciar_monografias %}
+      <a href="{% url 'monografia:create' %}" 
+         class="flex items-center p-4 bg-green-50 rounded-lg hover:bg-green-100 transition-colors">
+        <svg class="h-6 w-6 text-green-600 mr-3" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
+        </svg>
+        <span class="font-medium text-green-900">Nova Monografia</span>
+      </a>
+      {% endif %}
+
+      <a href="{% url 'accounts:profile' %}" 
+         class="flex items-center p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+        <svg class="h-6 w-6 text-gray-600 mr-3" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
+        </svg>
+        <span class="font-medium text-gray-900">Meu Perfil</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- Monografias recentes (se for admin/professor/coordenador) -->
+  {% if user.profile.pode_gerenciar_monografias and monografias_recentes %}
+  <div class="bg-white shadow rounded-lg p-6">
+    <h3 class="text-lg font-medium text-gray-900 mb-4">Monografias Recentes</h3>
+    <div class="space-y-3">
+      {% for monografia in monografias_recentes %}
+      <div class="flex items-center justify-between py-2 border-b border-gray-200 last:border-b-0">
+        <div>
+          <h4 class="font-medium text-gray-900">{{ monografia.titulo|truncatechars:50 }}</h4>
+          <p class="text-sm text-gray-500">Por {{ monografia.autor }} • {{ monografia.created_at|date:"d/m/Y" }}</p>
+        </div>
+        <a href="{% url 'monografia:detail' monografia.pk %}" 
+           class="text-blue-600 hover:text-blue-800 text-sm font-medium">
+          Ver →
+        </a>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

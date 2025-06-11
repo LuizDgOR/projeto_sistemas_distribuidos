@@ -25,11 +25,9 @@ SECRET_KEY = 'django-insecure-8)(8zi#fukr=+^m3f9b50s*4(cnz#wrlzk79#$a+r3--10cle0
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = ['*']
 
 # Application definition
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -37,6 +35,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    
+    # Apps locais
     'accounts',
     'monografia',
     'rest_framework',
@@ -89,7 +89,6 @@ DATABASES = {
     }
 }
 
-
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
 
@@ -107,7 +106,6 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
-
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
@@ -174,3 +172,8 @@ SPECTACULAR_SETTINGS = {
 #     {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator'},
 #     {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 # ]
+
+# Login/Logout URLs
+LOGIN_URL = '/login/'
+LOGIN_REDIRECT_URL = '/monografias/'
+LOGOUT_REDIRECT_URL = '/monografias/'

@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% block title %}Acesso Negado - 403{% endblock %}
+
+{% block content %}
+<div class="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-md w-full space-y-8">
+    <div class="text-center">
+      <div class="text-9xl text-red-500 mb-4">🚫</div>
+      <h1 class="text-4xl font-bold text-gray-900 mb-2">403</h1>
+      <h2 class="text-2xl font-semibold text-gray-700 mb-4">Acesso Negado</h2>
+      
+      {% if error_message %}
+        <div class="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
+          <div class="flex items-center">
+            <div class="text-red-400 mr-3">⚠️</div>
+            <div class="text-red-800 text-sm">
+              {{ error_message }}
+            </div>
+          </div>
+        </div>
+      {% else %}
+        <p class="text-gray-600 mb-6">
+          Você não tem permissão para acessar esta página.
+        </p>
+      {% endif %}
+      
+      {% if user.is_authenticated %}
+        <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
+          <div class="text-blue-800 text-sm">
+            <strong>Usuário:</strong> {{ user.get_full_name|default:user.username }}<br>
+            {% if user.profile %}
+              <strong>Perfil:</strong> {{ user.profile.get_tipo_usuario_display }}
+            {% endif %}
+          </div>
+        </div>
+      {% endif %}
+    </div>
+    
+    <div class="space-y-3">
+      <a href="{% url 'monografia:list' %}" 
+         class="block w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded text-center">
+        📚 Voltar às Monografias
+      </a>
+      
+      {% if user.is_authenticated %}
+        <a href="{% url 'dashboard' %}" 
+           class="block w-full bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded text-center">
+          🏠 Ir para Dashboard
+        </a>
+      {% else %}
+        <a href="{% url 'login' %}" 
+           class="block w-full bg-gray-500 hover:bg-gray-600 text-white font-semibold py-2 px-4 rounded text-center">
+          🔑 Fazer Login
+        </a>
+      {% endif %}
+    </div>
+    
+    <div class="text-center text-sm text-gray-500">
+      <p>Se você acredita que deveria ter acesso a esta página,</p>
+      <p>entre em contato com o administrador do sistema.</p>
+    </div>
+  </div>
+</div>
+{% endblock %}

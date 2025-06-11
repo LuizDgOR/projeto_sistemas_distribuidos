@@ -1,16 +1,12 @@
 from django.urls import path
-from .views import (
-    MonografiaCreateView,
-    MonografiaListView,
-    MonografiaDetailView,
-    MonografiaUpdateView,
-    MonografiaDeleteView,
-)
+from . import views
+
+app_name = 'monografia'
 
 urlpatterns = [
-    path('', MonografiaListView.as_view(), name='monografia_list'),
-    path('criar/', MonografiaCreateView.as_view(), name='monografia_create'),
-    path('<int:pk>/', MonografiaDetailView.as_view(), name='monografia_detail'),
-    path('<int:pk>/editar/', MonografiaUpdateView.as_view(), name='monografia_update'),
-    path('<int:pk>/excluir/', MonografiaDeleteView.as_view(), name='monografia_delete'),
+    path('', views.MonografiaListView.as_view(), name='list'),
+    path('criar/', views.MonografiaCreateView.as_view(), name='create'),
+    path('<int:pk>/', views.MonografiaDetailView.as_view(), name='detail'),
+    path('<int:pk>/editar/', views.MonografiaUpdateView.as_view(), name='update'),
+    path('<int:pk>/excluir/', views.MonografiaDeleteView.as_view(), name='delete'),
 ]
